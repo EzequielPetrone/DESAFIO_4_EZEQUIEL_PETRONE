@@ -22,7 +22,6 @@ const contenedorProd = new Contenedor('./datos/productos.txt')
 //Seteo los diferentes ENDPOINTS:
 
 app.get("/", (req, res) => {
-    console.log(req.baseUrl);
     res.send(`<h1 style="color:5a1616">Bienvenidos al 3er Desafio Entregable!</h1>
         <h3 style="color:00797f">By Ezequiel Petrone</h3>`)
 })
