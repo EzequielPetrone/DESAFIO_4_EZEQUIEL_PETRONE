@@ -1,0 +1,32 @@
+[
+  {
+    "title": "CD Nuevas Eras",
+    "price": 1050,
+    "thumbnail": "https://servernube.imagen1.png",
+    "id": 1
+  },
+  {
+    "title": "CD Quemado",
+    "price": 1050,
+    "thumbnail": "https://servernube.imagen2.png",
+    "id": 2
+  },
+  {
+    "title": "Remera Volviendo",
+    "price": 2100,
+    "thumbnail": "https://servernube.imagen3.png",
+    "id": 3
+  },
+  {
+    "title": "Remera Hoy",
+    "price": 2100,
+    "thumbnail": "https://servernube.imagen4.png",
+    "id": 4
+  },
+  {
+    "title": "Poster Folklore",
+    "price": 450,
+    "thumbnail": "https://servernube.imagen5.png",
+    "id": 5
+  }
+]
