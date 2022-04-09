@@ -28,5 +28,10 @@
     "price": 450,
     "thumbnail": "https://servernube.imagen5.png",
     "id": 5
+  },
+  {
+    "lala": 5,
+    "test": "ok",
+    "id": 6
   }
 ]
