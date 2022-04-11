@@ -1,15 +1,9 @@
 [
   {
-    "title": "CD Nuevas Eras",
+    "title": "CD Quemado",
     "price": 1050,
     "thumbnail": "https://servernube.imagen1.png",
     "id": 1
-  },
-  {
-    "title": "CD Quemado",
-    "price": 1050,
-    "thumbnail": "https://servernube.imagen2.png",
-    "id": 2
   },
   {
     "title": "Remera Volviendo",
@@ -28,10 +22,5 @@
     "price": 450,
     "thumbnail": "https://servernube.imagen5.png",
     "id": 5
-  },
-  {
-    "lala": 5,
-    "test": "ok",
-    "id": 6
   }
 ]

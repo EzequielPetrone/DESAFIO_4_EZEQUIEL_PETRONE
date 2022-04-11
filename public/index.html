@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <base href="static/" target="_blank" />
+    <link rel="stylesheet" href="css/style.css">
     <title>Backend D4 - Ezequiel Petrone</title>
 </head>
+
 <body>
-    <h1 class="title">Test D4 Ezequiel Petrone</h1>
-    <img src="/static/images/logopez14.jpg">
+    <h1 class="title">Backend D4 - Ezequiel Petrone</h1>
+    <!-- <img src="images/logopez14.jpg" width="200"> -->
+    <!-- <h2 class="subtitle">Testeo api</h2>
+    <button class="ejecutor">Ejecutar Fetch</button> -->
+
+    <form action="/testMulter" method="post" enctype="multipart/form-data">
+        <div class="input-group">
+            <label for='name'>Your name</label>
+            <input name='name' placeholder="Enter your name" />
+        </div>
+        <div class="input-group">
+            <label for='files'>Select files</label>
+            <input name="myFiles" type="file" multiple>
+        </div>
+        <button class="submit-btn" type='submit'>Upload</button>
+    </form>
+
+    <!-- <h3 class="subtitle">Testeo fotos tmb</h3>
+    <img src="https://cdn-d15c.kxcdn.com/fotos/discos/000/010/856/original/pez-el-manto-electrico.png" width="200"> -->
+
+    <!-- <script src="js/index.js"></script> -->
 </body>
+
 </html>

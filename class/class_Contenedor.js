@@ -23,8 +23,7 @@ class Contenedor {
                     fs.mkdirSync(dir)
 
                 } catch (error) {
-                    console.log('Error al crear carpeta:', dir);
-                    throw error
+                    throw `Error al crear carpeta: ${dir}`
                 }
             }
             try {
@@ -32,8 +31,7 @@ class Contenedor {
                 console.log(`Archivo ${archivo} creado de cero`)
 
             } catch (error) {
-                console.log('Error al querer crear archivo de cero');
-                throw error
+                throw 'Error al querer crear archivo de cero'
             }
         }
 
@@ -49,9 +47,7 @@ class Contenedor {
             console.log('Objeto Contenedor creado en base al archivo:', archivo)
 
         } catch (error) {
-            console.log(`El formato del contenido del archivo ${archivo} es incompatible con esta aplicación.
-                        No puede obtenerse un Array de su parseo.`)
-            throw error
+            throw `El formato del contenido del archivo ${archivo} es incompatible con esta aplicación. No puede obtenerse un Array de su parseo.`
         }
     }
 
@@ -60,14 +56,15 @@ class Contenedor {
             return JSON.parse(await fs.promises.readFile(this.archivo, 'utf-8'))
 
         } catch (error) {
-            console.log('Error al querer leer el contenido del archivo:', this.archivo);
-            throw error
+            throw `Error al querer leer el contenido del archivo: ${this.archivo}`
         }
     }
 
-    async save(objeto) { //return Number - Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
+    async save(obj) { //return Number - Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
 
-        if (objeto && Object.prototype.toString.call(objeto) === '[object Object]') { // Primero valido que el parámetro sea un objeto
+        let objeto = Array.isArray(obj) ? obj[0] : obj
+        // Valido que el parámetro sea un objeto
+        if (objeto && Object.prototype.toString.call(objeto) === '[object Object]' && Object.keys(objeto).length > 0) {
             try {
                 // Me traigo el array contenido del file y le hago un push del nuevo objeto
                 // No uso el método appendFile (lo que me evitaría tener que leer todo)
@@ -83,11 +80,10 @@ class Contenedor {
                 return this.lastId
 
             } catch (error) {
-                console.log('Error al querer procesar el contenido del archivo:', this.archivo);
-                throw error
+                throw `Error al querer procesar el contenido del archivo: ${this.archivo}`
             }
         } else {
-            console.log('El parámetro no es un objeto');
+            console.log('El parámetro recibido por el método save no es un objeto');
             return null // Retorno null cuando no hay objeto para agregar al array del archivo
         }
     }
@@ -98,25 +94,27 @@ class Contenedor {
             return contenidoFile.find(obj => obj.id == number) ?? null
 
         } catch (error) {
-            throw error
+            throw `Error al obtener objeto con id ${number}`
         }
     }
 
     async deleteById(number) { //: void - Elimina del archivo el objeto con el id buscado.
         try {
             const contenidoFile = await this.getAll()
-            const newContenido = contenidoFile.filter(obj => obj.id !== number)
+            const newContenido = contenidoFile.filter(obj => obj.id != number)
 
             if (contenidoFile.length > newContenido.length) { // Valido para no sobre-escribir file si no vale la pena
-                await fs.promises.writeFile(this.archivo, JSON.stringify(newContenido, null, 2))
 
+                await fs.promises.writeFile(this.archivo, JSON.stringify(newContenido, null, 2))
                 console.log(`Eliminado del file objeto con id: ${number}`);
+                return true
 
             } else {
                 console.log(`No hay objeto con id: ${number} para eliminar. Contenido del file sigue igual`);
+                return false
             }
         } catch (error) {
-            throw error
+            throw `Error al eliminar objeto con id ${number}`
         }
     }
 
@@ -124,9 +122,44 @@ class Contenedor {
         try {
             await fs.promises.writeFile(this.archivo, JSON.stringify([]))
             console.log('Se ha vaciado el file:', this.archivo);
+            return true
 
         } catch (error) {
-            throw error
+            return false
+        }
+    }
+
+    async editById(id, obj) {
+
+        if (await this.getById(id)) {
+
+            let objeto = Array.isArray(obj) ? obj[0] : obj
+            // Valido que el parámetro sea un objeto
+            if (objeto && Object.prototype.toString.call(objeto) === '[object Object]') {
+                try {
+                    const contenidoFile = await this.getAll()
+
+                    const newCF = contenidoFile.map(x => {
+                        if (x.id == id) {
+                            Object.assign(x, objeto)
+                            x.id = parseInt(id)
+                        }
+                        return x
+                    })
+
+                    await fs.promises.writeFile(this.archivo, JSON.stringify(newCF, null, 2))
+                    return true
+
+                } catch (error) {
+                    throw `Error al querer procesar el contenido del archivo: ${this.archivo}`
+                }
+            } else {
+                console.log('El parámetro no es un objeto');
+                return false // Retorno null cuando no hay objeto para agregar al array del archivo
+            }
+        } else {
+            console.log('No existe objeto con id:', id);
+            return false // Retorno null cuando no hay objeto para agregar al array del archivo
         }
     }
 }
