@@ -22,5 +22,11 @@
     "price": 450,
     "thumbnail": "https://servernube.imagen5.png",
     "id": 5
+  },
+  {
+    "title": "Poster CD",
+    "price": 550,
+    "thumbnail": "http://localhost:8080/static/1649787819164-logopez14.jpg",
+    "id": 6
   }
 ]

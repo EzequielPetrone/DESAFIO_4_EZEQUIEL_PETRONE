@@ -10,12 +10,6 @@ try {
     const router = Router()
     app.use('/api/productos', router)
 
-    //Seteo Static
-    const STATICPATH = '/static'
-    app.use(STATICPATH, express.static(__dirname + '/public'));
-    const UPLOADPATH = 'myUploads'
-    app.use(STATICPATH, express.static(__dirname + '/' + UPLOADPATH));
-
     //Configuro Middleware de manejo de errores
     const mwError = (err, req, res, next) => {
         console.error(err.stack);
@@ -107,27 +101,29 @@ try {
         }
     })
 
-    //TEST FORM
+    //Seteo Static
+    const STATICPATH = '/static'
+    app.use(STATICPATH, express.static(__dirname + '/public'));
+    const UPLOADPATH = 'myUploads'
+    app.use(STATICPATH, express.static(__dirname + '/' + UPLOADPATH));
 
     //Importo y configuto Multer (para poder procesar enctype="multipart/form-data")
     const multer = require('multer')
     const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, UPLOADPATH)
-        },
-        filename: function (req, file, cb) {
-            cb(null, Date.now() + '-' + file.originalname)
-        }
+        destination: (req, file, cb) => cb(null, UPLOADPATH),
+        filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
     })
     const upload = multer({ storage: storage })
 
-    //Uploading multiple files
+    //Procesando post form
     router.post('/form', upload.single('myFile'), async (req, res) => {
+
+        const FULLURL = req.protocol + '://' + req.get('host') + STATICPATH + '/'
 
         const obj = {
             title: req.body.productName,
             price: parseFloat(req.body.price),
-            thumbnail: req.file ? (STATICPATH + '/' + req.file.filename) : req.body.thumbnail
+            thumbnail: req.file ? (FULLURL + req.file.filename) : req.body.thumbnail
         }
         try {
             let newId = await contenedorProd.save(obj)
@@ -147,7 +143,6 @@ try {
     const server = app.listen(PUERTO, () => {
         console.log('Servidor HTTP escuchando en puerto:', server.address().port);
     })
-
 
     //Server Error handling
     server.on("error", error => {

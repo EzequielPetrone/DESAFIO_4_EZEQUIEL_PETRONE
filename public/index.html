@@ -12,11 +12,8 @@
 
 <body>
     <h1 class="title">Backend D4 - Ezequiel Petrone</h1>
-    <!-- <img src="images/logopez14.jpg" width="200"> -->
-    <!-- <h2 class="subtitle">Testeo api</h2>
-    <button class="ejecutor">Ejecutar Fetch</button> -->
 
-    <form id="prodForm" enctype="multipart/form-data">
+    <form id="prodForm">
         <div class="input-group">
             <label for='productName'>Product Name</label>
             <input name='productName' placeholder="Enter product name" type="text" required />
@@ -36,8 +33,10 @@
         <button class="submit-btn" type='submit'>Upload</button>
     </form>
 
-    <!-- <h3 class="subtitle">Testeo fotos tmb</h3>
-    <img src="https://cdn-d15c.kxcdn.com/fotos/discos/000/010/856/original/pez-el-manto-electrico.png" width="200"> -->
+    <div class="btn-group">
+        <button id="btnTestApi">Test Get Productos</button>
+        <label for="btnTestApi">Hace un console.log() por cada producto del .txt</label>
+    </div>
 
     <script src="js/index.js"></script>
 </body>
