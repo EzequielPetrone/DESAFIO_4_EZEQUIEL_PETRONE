@@ -11,7 +11,10 @@ try {
     app.use('/api/productos', router)
 
     //Seteo Static
-    app.use('/static', express.static(__dirname + '/public'));
+    const STATICPATH = '/static'
+    app.use(STATICPATH, express.static(__dirname + '/public'));
+    const UPLOADPATH = 'myUploads'
+    app.use(STATICPATH, express.static(__dirname + '/' + UPLOADPATH));
 
     //Configuro Middleware de manejo de errores
     const mwError = (err, req, res, next) => {
@@ -26,6 +29,8 @@ try {
     //Configuro para poder leer sin problemas los req.body
     router.use(express.json())
     router.use(express.urlencoded({ extended: true }))
+    app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
 
     //Lanzo index.html
     app.get("/", (req, res) => {
@@ -102,11 +107,47 @@ try {
         }
     })
 
+    //TEST FORM
+
+    //Importo y configuto Multer (para poder procesar enctype="multipart/form-data")
+    const multer = require('multer')
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, UPLOADPATH)
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + '-' + file.originalname)
+        }
+    })
+    const upload = multer({ storage: storage })
+
+    //Uploading multiple files
+    router.post('/form', upload.single('myFile'), async (req, res) => {
+
+        const obj = {
+            title: req.body.productName,
+            price: parseFloat(req.body.price),
+            thumbnail: req.file ? (STATICPATH + '/' + req.file.filename) : req.body.thumbnail
+        }
+        try {
+            let newId = await contenedorProd.save(obj)
+
+            if (newId) {
+                res.json(await contenedorProd.getById(newId))
+            } else {
+                throw 'No se pudo crear el producto'
+            }
+        } catch (error) {
+            res.status(500).json({ error: error });
+        }
+    })
+
     //Defino puerto y pongo server a escuchar
     const PUERTO = 8080
     const server = app.listen(PUERTO, () => {
         console.log('Servidor HTTP escuchando en puerto:', server.address().port);
     })
+
 
     //Server Error handling
     server.on("error", error => {

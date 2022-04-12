@@ -1,4 +1,5 @@
 const APIPATH = '/api/productos'
+const FORM_APIPATH = APIPATH + '/form'
 
 async function obtenerProductos() {
     try {
@@ -12,5 +13,21 @@ async function obtenerProductos() {
     }
 }
 
-const elem = document.querySelector(".ejecutor");
-elem.addEventListener('click', obtenerProductos)
+const elem = document.querySelector("#prodForm");
+//elem.addEventListener('submit', e => e.target.reset())
+elem.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    try {
+        const resp = await fetch(FORM_APIPATH, { body: new FormData(elem), method: 'POST' })
+        if (resp.status < 400) {
+            alert('Nuevo producto guardado!\n' + JSON.stringify(await resp.json(), null, 2))
+            elem.reset()
+        } else {
+            alert('Hubo algún error!')
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+//frmFormComplete

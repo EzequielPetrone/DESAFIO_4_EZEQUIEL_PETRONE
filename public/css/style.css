@@ -4,30 +4,31 @@
     box-sizing: border-box;
 }
 
-.title{
-    color: brown;
-}
-
-.subtitle{
-    color: blue;
+.title {
+    color: darkred
 }
 
 form {
     background-color: white;
     padding: 30px;
 }
+
+
 form .input-group {
     margin-bottom: 15px;
 }
+
 form label {
     display: block;
     margin-bottom: 10px;
 }
+
 form input {
     padding: 12px 20px;
     width: 100%;
     border: 1px solid #ccc;
 }
+
 .submit-btn {
     width: 100%;
     border: none;
